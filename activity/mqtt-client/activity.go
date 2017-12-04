@@ -54,7 +54,7 @@ func (a *MQTTClientActivity) publish(brokerUrl string, clientId string, qos stri
 	// Create and start a client using the above ClientOptions
 	client := mqtt.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		panic(token.Error())
+		log.Error(token.Error())
 	}
 
 	token := client.Publish(topic, 0, false, msg)
