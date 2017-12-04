@@ -1,12 +1,10 @@
 package mqttclient
 
 import (
-	"github.com/TIBCOSoftware/flogo-lib/logger"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
 type MQTTClient struct {
-	context   *activity.Context
 	client    mqtt.Client
 	brokerUrl string
 	clientId  string
@@ -14,15 +12,13 @@ type MQTTClient struct {
 	topic     string
 }
 
-var log = logger.GetLogger("activity-mqtt-client")
-
 // Default message handler function
 //func msgHandler(client mqtt.Client, msg mqtt.Message) {
 //	log.Infof("TOPIC: %s\n", msg.Topic())
 //	log.Infof("MSG: %s\n", msg.Payload())
 //}
 
-func NewMQTTClient(context activity.Context, brokerUrl string, clientId string, qos byte) *MQTTClient {
+func NewMQTTClient(brokerUrl string, clientId string, qos byte) *MQTTClient {
 	opts := mqtt.NewClientOptions().AddBroker(brokerUrl)
 	opts.SetClientID(clientId)
 //	opts.SetDefaultPublishHandler(msgHandler)

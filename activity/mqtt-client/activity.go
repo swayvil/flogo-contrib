@@ -15,7 +15,7 @@ type MQTTClientActivity struct {
 
 // NewActivity creates a new activity
 func NewActivity(metadata *activity.Metadata) activity.Activity {
-	return &MQTTClientActivity{metadata: metadata, nil}
+	return &MQTTClientActivity{metadata, nil}
 }
 
 // Metadata implements activity.Activity.Metadata
@@ -28,7 +28,7 @@ func (a *MQTTClientActivity) Eval(context activity.Context) (done bool, err erro
 	// Get the activity data from the context
 	brokerUrl := context.GetInput("brokerUrl").(string)
 	clientId := context.GetInput("clientId").(string)
-	qos := context.GetInput("qos").(string)
+	qos := context.GetInput("qos").(byte)
 	topic := context.GetInput("topic").(string)
 	msg := context.GetInput("message").(string)
 	
