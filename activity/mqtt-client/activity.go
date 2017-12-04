@@ -28,7 +28,7 @@ func (a *MQTTClientActivity) Eval(context activity.Context) (done bool, err erro
 	// Get the activity data from the context
 	brokerUrl := context.GetInput("brokerUrl").(string)
 	clientId := context.GetInput("clientId").(string)
-	qos := context.GetInput("qos").(byte)
+	qos := context.GetInput("qos").(string)
 	topic := context.GetInput("topic").(string)
 	msg := context.GetInput("message").(string)
 	
@@ -38,7 +38,7 @@ func (a *MQTTClientActivity) Eval(context activity.Context) (done bool, err erro
 	log.Debugf("Message published on [%s] topic, [%s] MQTT broker", topic, brokerUrl)
 
 	// Set the result as part of the context
-	//context.SetOutput("message", "The Flogo engine says "+salutation+" to "+name)
+	context.SetOutput("result", "OK")
 
 	// Signal to the Flogo engine that the activity is completed
 	return true, nil

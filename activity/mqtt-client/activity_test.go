@@ -1,11 +1,11 @@
 package mqttclient
 
 import (
+	"github.com/TIBCOSoftware/flogo-contrib/action/flow/test"
+	"github.com/TIBCOSoftware/flogo-lib/core/activity"
+	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"testing"
-	//"github.com/TIBCOSoftware/flogo-contrib/action/flow/test"
-	"github.com/TIBCOSoftware/flogo-lib/core/activity"
-	//"github.com/stretchr/testify/assert"
 )
 
 var activityMetadata *activity.Metadata
@@ -36,22 +36,25 @@ func TestCreate(t *testing.T) {
 }
 
 func TestEval(t *testing.T) {
-	//	defer func() {
-	//		if r := recover(); r != nil {
-	//			t.Failed()
-	//			t.Errorf("panic during execution: %v", r)
-	//		}
-	//	}()
-	//
-	//	act := NewActivity(getActivityMetadata())
-	//	tc := test.NewTestActivityContext(getActivityMetadata())
-	//
-	//	//setup attrs
-	//	tc.SetInput("name", "Leon")
-	//	tc.SetInput("salutation", "Hello")
-	//	act.Eval(tc)
-	//
-	//	//check result attr
-	//	result := tc.GetOutput("result")
-	//	assert.Equal(t, result, "The Flogo engine says Hello to Leon")
+	defer func() {
+		if r := recover(); r != nil {
+			t.Failed()
+			t.Errorf("panic during execution: %v", r)
+		}
+	}()
+
+	act := NewActivity(getActivityMetadata())
+	tc := test.NewTestActivityContext(getActivityMetadata())
+
+	//setup attrs
+	tc.SetInput("brokerUrl", "tcp://localhost:1883")
+	tc.SetInput("clientId", "iot-client")
+	tc.SetInput("qos", "0")
+	tc.SetInput("topic", "test/topic")
+	tc.SetInput("message", "Hello World!")
+	act.Eval(tc)
+
+	//check result attr
+	result := tc.GetOutput("result")
+	assert.Equal(t, result, "OK")
 }
