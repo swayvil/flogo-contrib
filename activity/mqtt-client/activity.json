@@ -3,7 +3,10 @@
 	"version": "0.0.1",
 	"type": "flogo:activity",
 	"description": "Flogo activity: MQTT client",
-	"author": "vtaront@tibco.com",
+	"author": "Swayvil <vtaront@tibco.com>",
+	"ref": "github.com/swayvil/flogo-contrib/activity/mqtt-client",
+	"title": "MQTT Publish",
+	"homepage": "https://github.com/swayvil/flogo-contrib/tree/master/activity/mqtt-client",
 	"inputs": [
 		{
 			"name": "brokerUrl",
