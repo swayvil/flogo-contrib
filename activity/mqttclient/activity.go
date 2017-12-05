@@ -1,4 +1,4 @@
-package mqtt-client
+package mqttclient
 
 import (
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
@@ -6,7 +6,7 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
-var log = logger.GetLogger("activity-mqtt-client")
+var log = logger.GetLogger("activity-mqttclient")
 
 // MQTTClientActivity is a stub for your Activity implementation
 type MQTTClientActivity struct {
