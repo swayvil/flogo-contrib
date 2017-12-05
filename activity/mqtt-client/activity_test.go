@@ -1,4 +1,4 @@
-package mqttclient
+package mqtt-client
 
 import (
 	"github.com/TIBCOSoftware/flogo-contrib/action/flow/test"
