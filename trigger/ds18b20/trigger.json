@@ -9,7 +9,7 @@
 	"homepage": "https://github.com/swayvil/flogo-contrib/tree/master/trigger/ds18b20",
 	"settings": [
 		{
-			"name": "setting",
+			"name": "sleepDuration",
 			"type": "string"
 		}
 	],

@@ -34,7 +34,7 @@ func (tr *TestRunner) RunAction(ctx context.Context, act action.Action, options 
 const testConfig string = `{
   "id": "ds18b20trigger",
   "settings": {
-	  "setting": "test_setting",
+	  "sleepDuration": "1",
   },
   "handlers": [
     {

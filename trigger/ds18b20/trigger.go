@@ -4,6 +4,8 @@ import (
 	"github.com/TIBCOSoftware/flogo-lib/core/action"
 	"github.com/TIBCOSoftware/flogo-lib/core/trigger"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
+	"time"
+	"strconv"
 	//"github.com/yryz/ds18b20"
 )
 
@@ -46,8 +48,17 @@ func (t *DS18b20Trigger) Metadata() *trigger.Metadata {
 // Start implements trigger.Trigger.Start
 func (t *DS18b20Trigger) Start() error {
 	log.Info("Starting ds18b20 Trigger")
+	
+	sleepDuration, err := strconv.Atoi(t.config.GetSetting("sleepDuration"))
+	if err != nil {
+		log.Error("Error converting \"sleepDuration\" to an integer ", err.Error())
+		return err
+	}
 
-	t.RunAction(t.getTemperature())
+	for true {
+		t.RunAction(t.getTemperature())
+		time.Sleep(time.Duration(sleepDuration) * time.Second)
+	}
 	return nil
 }
 
