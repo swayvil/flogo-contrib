@@ -54,17 +54,16 @@ func (t *DS18b20Trigger) Start() error {
 // RunAction starts a new Process Instance
 func (t *DS18b20Trigger) RunAction(temperature string) {
 	req := t.constructStartRequest(temperature)
-	//startAttrs, _ := t.metadata.OutputsToAttrs(req.Data, false)
-	t.metadata.OutputsToAttrs(req.Data, false)
+	startAttrs, _ := t.metadata.OutputsToAttrs(req.Data, false)
 
-	//act := action.Get(handlerCfg.ActionId)
-	//ctx := trigger.NewInitialContext(startAttrs, handlerCfg)
-	//results, err := t.runner.RunAction(ctx, act, nil)
+	actionId := singleton.config.Handlers[0].ActionId
+	act := action.Get(actionId)
+	ctx := trigger.NewInitialContext(startAttrs, singleton.config.Handlers[0])
+	_, err := singleton.runner.RunAction(ctx, act, nil)
 
-	//if err != nil {
-	//	log.Error("Error starting action: ", err.Error())
-	//}
-	//log.Debugf("Ran action: [%s]", handlerCfg.ActionId)
+	if err != nil {
+		log.Debugf("ds18b20 Trigger Error: %s", err.Error())
+	}
 }
 
 // Stop implements trigger.Trigger.Start
@@ -83,8 +82,8 @@ func (t *DS18b20Trigger) constructStartRequest(temperature string) *StartRequest
 
 // StartRequest describes a request for starting a ProcessInstance
 type StartRequest struct {
-	ProcessURI  string                 `json:"flowUri"`
-	Data        map[string]interface{} `json:"data"`
+	ProcessURI string                 `json:"flowUri"`
+	Data       map[string]interface{} `json:"data"`
 }
 
 // *************
