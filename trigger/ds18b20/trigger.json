@@ -2,9 +2,16 @@
 	"name": "ds18b20",
 	"version": "0.0.1",
 	"type": "flogo:trigger",
+	"ref": "github.com/swayvil/flogo-contrib/trigger/ds18b20",
+	"title": "Receive temperature from ds18b20 sensor",
 	"description": "ds18b20 trigger",
 	"author": "Swayvil <swayvil@gmail.com>",
+	"homepage": "https://github.com/swayvil/flogo-contrib/tree/master/trigger/ds18b20",
 	"settings": [
+		{
+			"name": "setting",
+			"type": "string"
+		}
 	],
 	"outputs": [
 		{
