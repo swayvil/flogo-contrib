@@ -45,7 +45,26 @@ func (t *DS18b20Trigger) Metadata() *trigger.Metadata {
 
 // Start implements trigger.Trigger.Start
 func (t *DS18b20Trigger) Start() error {
+	log.Info("Starting ds18b20 Trigger")
+
+	t.RunAction(t.getTemperature())
 	return nil
+}
+
+// RunAction starts a new Process Instance
+func (t *DS18b20Trigger) RunAction(temperature string) {
+	req := t.constructStartRequest(temperature)
+	//startAttrs, _ := t.metadata.OutputsToAttrs(req.Data, false)
+	t.metadata.OutputsToAttrs(req.Data, false)
+
+	//act := action.Get(handlerCfg.ActionId)
+	//ctx := trigger.NewInitialContext(startAttrs, handlerCfg)
+	//results, err := t.runner.RunAction(ctx, act, nil)
+
+	//if err != nil {
+	//	log.Error("Error starting action: ", err.Error())
+	//}
+	//log.Debugf("Ran action: [%s]", handlerCfg.ActionId)
 }
 
 // Stop implements trigger.Trigger.Start
@@ -54,63 +73,39 @@ func (t *DS18b20Trigger) Stop() error {
 	return nil
 }
 
-func Invoke() (interface{}, error) {
-	log.Info("Starting ds18b20 Trigger")
+func (t *DS18b20Trigger) constructStartRequest(temperature string) *StartRequest {
+	req := &StartRequest{}
+	data := make(map[string]interface{})
+	data["temperature"] = temperature
+	req.Data = data
+	return req
+}
 
-	temperature := getTemperature()
-	data := map[string]interface{}{
-		"temperature": temperature,
-	}
-
-	startAttrs, err := singleton.metadata.OutputsToAttrs(data, false)
-	if err != nil {
-		log.Errorf("After run error' %s'\n", err)
-		return nil, err
-	}
-
-	actionId := singleton.config.Handlers[0].ActionId
-	log.Debugf("Calling actionid: '%s'\n", actionId)
-	act := action.Get(actionId)
-
-	ctx := trigger.NewInitialContext(startAttrs, singleton.config.Handlers[0])
-	results, err := singleton.runner.RunAction(ctx, act, nil)
-
-	var replyData interface{}
-
-	if len(results) != 0 {
-		dataAttr, ok := results["data"]
-		if ok {
-			replyData = dataAttr.Value
-		}
-	}
-
-	if err != nil {
-		log.Debugf("ds18b20 Trigger Error: %s", err.Error())
-		return nil, err
-	}
-
-	return replyData, err
+// StartRequest describes a request for starting a ProcessInstance
+type StartRequest struct {
+	ProcessURI  string                 `json:"flowUri"`
+	Data        map[string]interface{} `json:"data"`
 }
 
 // *************
 // ds18b20 specific
 // *************
 
-func getTemperature() string {
-//	sensors, err := ds18b20.Sensors()
-//	if err != nil {
-//		log.Error(err)
-//		panic(err)
-//	}
-//
-//	for _, sensor := range sensors {
-//		t, err := ds18b20.Temperature(sensor)
-//		if err == nil {
-//			log.Debugf("Sensor: %s temperature: %.2f°C\n", sensor, t)
-//			return t
-//		} else {
-//			log.Error(err)
-//		}
-//	}
+func (t *DS18b20Trigger) getTemperature() string {
+	//	sensors, err := ds18b20.Sensors()
+	//	if err != nil {
+	//		log.Error(err)
+	//		panic(err)
+	//	}
+	//
+	//	for _, sensor := range sensors {
+	//		t, err := ds18b20.Temperature(sensor)
+	//		if err == nil {
+	//			log.Debugf("Sensor: %s temperature: %.2f°C\n", sensor, t)
+	//			return t
+	//		} else {
+	//			log.Error(err)
+	//		}
+	//	}
 	return "42"
 }
