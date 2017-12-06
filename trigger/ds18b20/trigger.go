@@ -6,7 +6,7 @@ import (
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"time"
 	"strconv"
-	//"github.com/yryz/ds18b20"
+	"github.com/yryz/ds18b20"
 )
 
 var log = logger.GetLogger("trigger-ds18b20")
@@ -102,20 +102,20 @@ type StartRequest struct {
 // *************
 
 func (t *DS18b20Trigger) getTemperature() string {
-	//	sensors, err := ds18b20.Sensors()
-	//	if err != nil {
-	//		log.Error(err)
-	//		panic(err)
-	//	}
-	//
-	//	for _, sensor := range sensors {
-	//		t, err := ds18b20.Temperature(sensor)
-	//		if err == nil {
-	//			log.Debugf("Sensor: %s temperature: %.2f°C\n", sensor, t)
-	//			return t
-	//		} else {
-	//			log.Error(err)
-	//		}
-	//	}
-	return "42"
+		sensors, err := ds18b20.Sensors()
+		if err != nil {
+			log.Error(err)
+			panic(err)
+		}
+	
+		for _, sensor := range sensors {
+			t, err := ds18b20.Temperature(sensor)
+			if err == nil {
+				log.Debugf("Sensor: %s temperature: %.2f°C\n", sensor, t)
+				return strconv.FormatFloat(t, 'E', 4, 64)
+			} else {
+				log.Error(err)
+			}
+		}
+	return "0"
 }
