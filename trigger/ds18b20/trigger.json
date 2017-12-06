@@ -1,0 +1,29 @@
+{
+	"name": "ds18b20",
+	"version": "0.0.1",
+	"type": "flogo:trigger",
+	"description": "ds18b20 trigger",
+	"author": "Swayvil <swayvil@gmail.com>",
+	"settings": [
+	],
+	"outputs": [
+		{
+			"name": "temperature",
+			"type": "string"
+		}
+	],
+	"reply": [
+		{
+			"name": "data",
+			"type": "object"
+		}
+	],
+	"handler": {
+		"settings": [
+			{
+				"name": "handler_setting",
+				"type": "string"
+			}
+		]
+	}
+}

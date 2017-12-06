@@ -4,6 +4,7 @@ import (
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"strconv"
 )
 
 var log = logger.GetLogger("activity-mqttclient")
@@ -28,9 +29,13 @@ func (a *MQTTClientActivity) Eval(context activity.Context) (done bool, err erro
 	// Get the activity data from the context
 	brokerUrl := context.GetInput("brokerUrl").(string)
 	clientId := context.GetInput("clientId").(string)
-	qos := context.GetInput("qos").(string)
 	topic := context.GetInput("topic").(string)
 	msg := context.GetInput("message").(string)
+	qos, err := strconv.Atoi(context.GetInput("qos").(string))
+	if err != nil {
+		log.Error("Error converting \"qos\" to an integer ", err.Error())
+		return err
+	}
 
 	a.publish(brokerUrl, clientId, qos, topic, msg)
 
@@ -47,7 +52,7 @@ func (a *MQTTClientActivity) Eval(context activity.Context) (done bool, err erro
 // MQTT specific
 // *************
 
-func (a *MQTTClientActivity) publish(brokerUrl string, clientId string, qos string, topic string, msg string) {
+func (a *MQTTClientActivity) publish(brokerUrl string, clientId string, qos int, topic string, msg string) {
 	opts := mqtt.NewClientOptions().AddBroker(brokerUrl)
 	opts.SetClientID(clientId)
 
@@ -57,7 +62,7 @@ func (a *MQTTClientActivity) publish(brokerUrl string, clientId string, qos stri
 		log.Error(token.Error())
 	}
 
-	token := client.Publish(topic, 0, false, msg)
+	token := client.Publish(topic, byte(qos), false, msg)
 	token.Wait()
 
 	// Disconnect
