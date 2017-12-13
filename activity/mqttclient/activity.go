@@ -34,7 +34,7 @@ func (a *MQTTClientActivity) Eval(context activity.Context) (done bool, err erro
 	qos, err := strconv.Atoi(context.GetInput("qos").(string))
 	if err != nil {
 		log.Error("Error converting \"qos\" to an integer ", err.Error())
-		return err
+		return true, err
 	}
 
 	a.publish(brokerUrl, clientId, qos, topic, msg)
